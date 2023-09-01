@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "SchoolApplication"
 include(":app")
- 
+include(":QuizzesMaster")
