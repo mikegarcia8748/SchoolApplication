@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".ActivityTakeQuiz"
+            android:name=".ActivityThemePreview"
             android:exported="false" />
     </application>
 

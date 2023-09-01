@@ -16,3 +16,6 @@ dependencyResolutionManagement {
 rootProject.name = "SchoolApplication"
 include(":app")
 include(":QuizzesMaster")
+include(":AccountManagement")
+include(":Authentication")
+include(":AppTheme")
