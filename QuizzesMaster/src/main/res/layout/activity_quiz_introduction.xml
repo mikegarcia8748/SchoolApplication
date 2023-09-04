@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Base.Theme.SchoolApplication"
+    tools:context=".ActivityQuizIntroduction">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lblTitle"
+        style="@style/TextAppearanceTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/lblQuizIntroTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lblSubTitle"
+        style="@style/TextAppearanceSubTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/lblQuizIntroSubTitle"
+        app:layout_constraintStart_toStartOf="@+id/lblTitle"
+        app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnClose"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        app:icon="@drawable/ic_baseline_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/lblTitle" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lblUserName"
+        style="@style/TextAppearanceSubTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/lblEnterUserName"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/til_username"
+        app:layout_constraintStart_toStartOf="@+id/til_username" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_username"
+        style="@style/TextInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_username"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblSubTitle"
+        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintWidth_percent="0.9">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_username"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:imeOptions="actionNext"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btnStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/til_username"
+        app:layout_constraintStart_toStartOf="@+id/til_username"
+        app:layout_constraintTop_toBottomOf="@+id/til_username"
+        app:layout_constraintVertical_bias="0.3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

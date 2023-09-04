@@ -1,1 +1,20 @@
-<resources></resources>
+<resources>
+
+<!--    Labels-->
+    <string name="lblQuizIntroTitle">Welcome \nLet\'s Take a Quiz!!</string>
+    <string name="lblQuizIntroSubTitle">Get Ready to Test Your Knowledge!</string>
+    <string name="lblEnterUserName">Please enter your username</string>
+
+<!--    Hints-->
+    <string name="hint_username">User Name</string>
+
+<!--    Button Texts-->
+    <string name="btnStart">Start</string>
+    <string name="btnTextPlaceHolder">Button</string>
+    <string name="btnSubmit">Submit</string>
+    <string name="btnCheckAnswer">Check Answer</string>
+    <string name="btnContinue">Continue</string>
+
+<!--    PlaceHolder-->
+    <string name="lblProgressHolder">0/10</string>
+</resources>

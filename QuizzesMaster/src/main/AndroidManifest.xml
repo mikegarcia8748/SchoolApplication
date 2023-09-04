@@ -3,8 +3,15 @@
 
     <application>
         <activity
-            android:name=".ActivityTakeQuiz"
-            android:exported="false" />
+            android:name=".ActivityQuizIntroduction"
+            android:theme="@style/Base.Theme.SchoolApplication"
+            android:screenOrientation="portrait"
+            android:exported="true" />
+        <activity
+            android:name=".ActivityQuizQuestions"
+            android:theme="@style/Base.Theme.SchoolApplication"
+            android:screenOrientation="portrait"
+            android:exported="true" />
     </application>
 
 </manifest>
