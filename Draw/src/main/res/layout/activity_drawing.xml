@@ -21,6 +21,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <org.dna.draw.DrawingView
+        android:id="@+id/drawingView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/bg_drawing_canvas"

@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.graphics.BitmapCompat
@@ -94,10 +95,17 @@ class DrawingView(mContext: Context, mAttr: AttributeSet): View(mContext, mAttr)
         return true
     }
 
+    fun setBrushSize(size: Float){
+        pnBrushSize = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            size,
+            resources.displayMetrics)
+
+        poPaint!!.strokeWidth = pnBrushSize
+    }
+
     internal inner class CustomPath(
         var color: Int,
         var brushThickness: Float): Path(){
-
-
     }
 }
