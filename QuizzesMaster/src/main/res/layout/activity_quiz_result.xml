@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ActivityQuizResult">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/img_trophy"
+        app:layout_constraintBottom_toTopOf="@+id/lblCongratulate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.90"
+        app:layout_constraintWidth_percent=".4" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lblCongratulate"
+        style="@style/TextAppearanceTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lblCongras"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.60" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lblUserName"
+        style="@style/TextAppearanceHeading1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lblUserNamePlaceHolder"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="@+id/lblCongratulate"
+        app:layout_constraintStart_toStartOf="@+id/lblCongratulate"
+        app:layout_constraintTop_toBottomOf="@+id/lblCongratulate" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lblQuizScore"
+        style="@style/TextAppearanceHeading1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lblScorePlaceHolder"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="@+id/lblUserName"
+        app:layout_constraintStart_toStartOf="@+id/lblUserName"
+        app:layout_constraintTop_toBottomOf="@+id/lblUserName" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

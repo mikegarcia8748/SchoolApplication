@@ -1,4 +1,4 @@
-package org.dna.quizzesmaster
+package org.dna.quizzesmaster.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.widget.Toast
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import org.dna.quizzesmaster.R
+import org.dna.quizzesmaster.constants.Constants.USER_NAME
 
 class ActivityQuizIntroduction : AppCompatActivity() {
 
@@ -35,6 +37,7 @@ class ActivityQuizIntroduction : AppCompatActivity() {
             }
 
             val loIntent = Intent(this, ActivityQuizQuestions::class.java)
+            loIntent.putExtra(USER_NAME, txtUseName?.text.toString())
             startActivity(loIntent)
             finish()
         }

@@ -4,6 +4,10 @@ import org.dna.quizzesmaster.pojo.Question
 
 object Constants {
 
+    const val USER_NAME = "sUsername"
+    const val CORRECT_SCORE = "nCorrectx"
+    const val TOTAL_QUIZ = "nTotlQuiz"
+
     fun getQuestions() : ArrayList<Question> {
         val loQuestions = ArrayList<Question>()
 
@@ -30,6 +34,8 @@ object Constants {
             3
         )
 
+        loQuestions.add(loQuestion)
+
         loQuestion = Question(
             "MX0003",
             "What is Object Oriented Programming?",
@@ -41,6 +47,7 @@ object Constants {
             3
         )
 
+        loQuestions.add(loQuestion)
 
         loQuestion = Question(
             "MX0004",
@@ -52,7 +59,6 @@ object Constants {
             "Singapore",
             3
         )
-
 
         loQuestions.add(loQuestion)
 

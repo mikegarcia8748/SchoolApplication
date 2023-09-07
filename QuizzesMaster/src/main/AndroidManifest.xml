@@ -3,15 +3,20 @@
 
     <application>
         <activity
-            android:name=".ActivityQuizIntroduction"
-            android:theme="@style/Base.Theme.SchoolApplication"
+            android:name=".activity.ActivityQuizResult"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:theme="@style/Base.Theme.SchoolApplication" />
         <activity
-            android:name=".ActivityQuizQuestions"
-            android:theme="@style/Base.Theme.SchoolApplication"
+            android:name=".activity.ActivityQuizIntroduction"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:theme="@style/Base.Theme.SchoolApplication" />
+        <activity
+            android:name=".activity.ActivityQuizQuestions"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Base.Theme.SchoolApplication" />
     </application>
 
 </manifest>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Base.Theme.SchoolApplication"
-    tools:context=".ActivityQuizIntroduction">
+    tools:context=".activity.ActivityQuizIntroduction">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/lblTitle"
