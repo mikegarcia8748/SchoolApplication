@@ -1,0 +1,94 @@
+package org.dna.draw
+
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.util.AttributeSet
+import android.view.MotionEvent
+import android.view.View
+import androidx.core.graphics.BitmapCompat
+
+class DrawingView(mContext: Context, mAttr: AttributeSet): View(mContext, mAttr) {
+
+    private var poDrawPath: CustomPath? = null
+    private var poCanvasBmp: Bitmap? = null
+    private var poPaint: Paint? = null
+    private var poCanvasPnt: Paint? = null
+    private var pnBrushSize: Float = 0.toFloat()
+    private var poColor = Color.BLACK
+    private var poCanvas: Canvas? = null
+
+    init {
+        setupDrawing()
+    }
+
+    private fun setupDrawing(){
+        poPaint = Paint()
+        poDrawPath = CustomPath(poColor, pnBrushSize)
+        poPaint!!.color = poColor
+        poPaint!!.style = Paint.Style.STROKE
+        poPaint!!.strokeJoin = Paint.Join.ROUND
+        poPaint!!.strokeCap = Paint.Cap.ROUND
+        poCanvasPnt = Paint(Paint.DITHER_FLAG)
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        poCanvasBmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        poCanvas = Canvas(poCanvasBmp!!)
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        canvas.drawBitmap(poCanvasBmp!!, 0f, 0f, poCanvasPnt)
+
+        if(!poDrawPath!!.isEmpty) {
+            poPaint!!.strokeWidth = poDrawPath!!.brushThickness
+            poPaint!!.color = poPaint!!.color
+            canvas.drawPath(poDrawPath!!, poPaint!!)
+        }
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        val lnTouchx = event?.x
+        val lnTouchy = event?.y
+
+        when(event?.action){
+            MotionEvent.ACTION_DOWN -> {
+                poDrawPath!!.color = poColor
+
+                poDrawPath!!.reset()
+                if(lnTouchx != null
+                    && lnTouchy != null){
+                    poDrawPath!!.moveTo(lnTouchx, lnTouchy)
+                }
+            }
+
+            MotionEvent.ACTION_MOVE ->{
+                if (lnTouchx != null
+                    && lnTouchy != null) {
+                        poDrawPath!!.lineTo(lnTouchx, lnTouchy)
+                }
+            }
+
+            MotionEvent.ACTION_UP ->{
+                poDrawPath = CustomPath(poColor, pnBrushSize)
+            }
+            else -> return false
+        }
+
+        invalidate()
+
+        return true
+    }
+
+    internal inner class CustomPath(
+        var color: Int,
+        var brushThickness: Float): Path(){
+
+
+    }
+}
