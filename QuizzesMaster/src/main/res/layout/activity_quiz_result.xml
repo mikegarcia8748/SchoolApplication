@@ -54,4 +54,15 @@
         app:layout_constraintStart_toStartOf="@+id/lblUserName"
         app:layout_constraintTop_toBottomOf="@+id/lblUserName" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFinish"
+        android:layout_width="90dp"
+        android:layout_height="37dp"
+        android:text="@string/btnFinish"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/lblQuizScore"
+        app:layout_constraintStart_toStartOf="@+id/lblQuizScore"
+        app:layout_constraintTop_toBottomOf="@+id/lblQuizScore"
+        app:layout_constraintVertical_bias="0.7" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

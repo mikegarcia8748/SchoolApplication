@@ -153,6 +153,7 @@ class ActivityQuizQuestions : AppCompatActivity(), View.OnClickListener {
                             loIntent.putExtra(Constants.CORRECT_SCORE, pnCorrectAns)
                             loIntent.putExtra(Constants.TOTAL_QUIZ, poQuestions?.size)
                             startActivity(loIntent)
+                        finish()
                         }
                     }
                 } else {

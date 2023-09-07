@@ -1,7 +1,9 @@
 package org.dna.quizzesmaster.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import org.dna.quizzesmaster.R
 import org.dna.quizzesmaster.constants.Constants
@@ -21,5 +23,13 @@ class ActivityQuizResult : AppCompatActivity() {
 
         lblUserName.text = lsUserName
         lblQuizScre.text = "Your score is $lnCorrectx out of $lnTotlQuiz"
+
+        var btnFinish: MaterialButton = findViewById(R.id.btnFinish)
+
+        btnFinish.setOnClickListener {
+            val loIntent = Intent(this, ActivityQuizIntroduction::class.java)
+            startActivity(loIntent)
+            finish()
+        }
     }
 }
