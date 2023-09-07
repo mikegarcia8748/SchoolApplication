@@ -20,6 +20,7 @@ class DrawingView(mContext: Context, mAttr: AttributeSet): View(mContext, mAttr)
     private var pnBrushSize: Float = 0.toFloat()
     private var poColor = Color.BLACK
     private var poCanvas: Canvas? = null
+    private var poPaths = ArrayList<CustomPath>()
 
     init {
         setupDrawing()
@@ -43,6 +44,13 @@ class DrawingView(mContext: Context, mAttr: AttributeSet): View(mContext, mAttr)
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+
+        for(path in poPaths){
+            poPaint!!.strokeWidth = path!!.brushThickness
+            poPaint!!.color = path!!.color
+            canvas.drawPath(path!!, poPaint!!)
+        }
+
         canvas.drawBitmap(poCanvasBmp!!, 0f, 0f, poCanvasPnt)
 
         if(!poDrawPath!!.isEmpty) {
@@ -75,6 +83,7 @@ class DrawingView(mContext: Context, mAttr: AttributeSet): View(mContext, mAttr)
             }
 
             MotionEvent.ACTION_UP ->{
+                poPaths.add(poDrawPath!!)
                 poDrawPath = CustomPath(poColor, pnBrushSize)
             }
             else -> return false
