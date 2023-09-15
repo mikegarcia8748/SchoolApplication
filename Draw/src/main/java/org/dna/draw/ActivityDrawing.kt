@@ -1,9 +1,11 @@
 package org.dna.draw
 
-import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import org.dna.draw.dialog.DialogBrushSize
 import org.dna.draw.dialog.OnSelectBrushSizeListener
 
@@ -11,12 +13,21 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
 
     private var drawingView: DrawingView? = null
 
+    private var poImageBtnCurrentPaint : ImageButton? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_drawing)
 
         drawingView = findViewById(R.id.drawingView)
         drawingView?.setBrushSize(10.toFloat())
+
+        val loBrushColors = findViewById<LinearLayout>(R.id.linearBrushColor)
+
+        poImageBtnCurrentPaint = loBrushColors[0] as ImageButton
+        poImageBtnCurrentPaint!!.setImageDrawable(
+            ContextCompat.getDrawable(this, R.drawable.pallete_selected)
+        )
 
         val btnSelectBrushSize: ImageButton = findViewById(R.id.btnSelectBrushSize)
 
@@ -26,28 +37,6 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
     }
 
     private fun showBrushSizeChooserDialog(){
-//        var loDialog = Dialog(this)
-//        loDialog.setContentView(R.layout.dialog_brush_sizes)
-//        loDialog.setTitle("Brush size: ")
-//        val btnSmall = loDialog.findViewById<ImageButton>(R.id.btnSmallBrush)
-//        val btnMedium = loDialog.findViewById<ImageButton>(R.id.btnMediumBrush)
-//        val btnLarge = loDialog.findViewById<ImageButton>(R.id.btnLargeBrush)
-//
-//        btnSmall.setOnClickListener {
-//            drawingView?.setBrushSize(10.toFloat())
-//            loDialog.dismiss()
-//        }
-//
-//        btnMedium.setOnClickListener {
-//            drawingView?.setBrushSize(20.toFloat())
-//            loDialog.dismiss()
-//        }
-//
-//        btnLarge.setOnClickListener {
-//            drawingView?.setBrushSize(30.toFloat())
-//            loDialog.dismiss()
-//        }
-//        loDialog.show()
         var loDialog = DialogBrushSize(this, this)
         loDialog.showDialog()
     }
