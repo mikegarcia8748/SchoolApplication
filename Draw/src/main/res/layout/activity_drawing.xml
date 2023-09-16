@@ -124,8 +124,14 @@
             style="@style/OutlinedButton.IconOnly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/bg_brush_size_medium" />
+            android:src="@drawable/baseline_format_paint_24" />
 
+        <ImageButton
+            android:id="@+id/btnSelectBackground"
+            style="@style/OutlinedButton.IconOnly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_image_24" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
