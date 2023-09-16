@@ -2,8 +2,10 @@ package org.dna.draw
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import org.dna.draw.dialog.DialogBrushSize
@@ -43,5 +45,23 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
 
     override fun OnSelectBrushSize(nBrushSize: Float) {
         drawingView?.setBrushSize(nBrushSize)
+    }
+
+    fun paintClick(view: View){
+        if(view !== poImageBtnCurrentPaint){
+            val btnPaint = view as ImageButton
+            val loColorTag = btnPaint.tag.toString()
+            drawingView?.setColor(loColorTag)
+
+            btnPaint.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.pallete_selected)
+            )
+
+            poImageBtnCurrentPaint?.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.pallete_normal)
+            )
+
+            poImageBtnCurrentPaint = view
+        }
     }
 }

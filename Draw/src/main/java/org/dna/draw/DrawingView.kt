@@ -104,6 +104,12 @@ class DrawingView(mContext: Context, mAttr: AttributeSet): View(mContext, mAttr)
         poPaint!!.strokeWidth = pnBrushSize
     }
 
+    fun setColor(fnColor: String) {
+        poColor = Color.parseColor(fnColor)
+
+        poCanvasPnt!!.color = poColor
+    }
+
     internal inner class CustomPath(
         var color: Int,
         var brushThickness: Float): Path(){
