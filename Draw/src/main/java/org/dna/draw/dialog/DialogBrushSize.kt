@@ -10,33 +10,33 @@ class DialogBrushSize(foContext: Context, fnListener: OnSelectBrushSizeListener)
     private val poContext: Context = foContext
     private val mListener: OnSelectBrushSizeListener = fnListener
 
-    var loDialog: Dialog? = null
+    var poDialog: Dialog? = null
 
     init {
-        loDialog = Dialog(poContext)
-        loDialog?.setContentView(R.layout.dialog_brush_sizes)
-        loDialog?.setTitle("Brush size: ")
-        val btnSmall = loDialog?.findViewById<ImageButton>(R.id.btnSmallBrush)
-        val btnMedium = loDialog?.findViewById<ImageButton>(R.id.btnMediumBrush)
-        val btnLarge = loDialog?.findViewById<ImageButton>(R.id.btnLargeBrush)
+        poDialog = Dialog(poContext)
+        poDialog?.setContentView(R.layout.dialog_brush_sizes)
+        poDialog?.setTitle("Brush size: ")
+        val btnSmall = poDialog?.findViewById<ImageButton>(R.id.btnSmallBrush)
+        val btnMedium = poDialog?.findViewById<ImageButton>(R.id.btnMediumBrush)
+        val btnLarge = poDialog?.findViewById<ImageButton>(R.id.btnLargeBrush)
 
         btnSmall!!.setOnClickListener {
             mListener.OnSelectBrushSize(10.toFloat())
-            loDialog?.dismiss()
+            poDialog?.dismiss()
         }
 
         btnMedium!!.setOnClickListener {
             mListener.OnSelectBrushSize(20.toFloat())
-            loDialog?.dismiss()
+            poDialog?.dismiss()
         }
 
         btnLarge!!.setOnClickListener {
             mListener.OnSelectBrushSize(30.toFloat())
-            loDialog?.dismiss()
+            poDialog?.dismiss()
         }
     }
 
     fun showDialog(){
-        loDialog?.show()
+        poDialog?.show()
     }
 }

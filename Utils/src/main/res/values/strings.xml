@@ -2,5 +2,8 @@
 
     <string name="lblDialogTitle">Title</string>
     <string name="lblDialogMessage">Message</string>
-    <string name="lblDialogMessage">Message</string>
+
+<!--    Place Holder-->
+    <string name="btnPositive">Yes</string>
+    <string name="btnNegative">No</string>
 </resources>
