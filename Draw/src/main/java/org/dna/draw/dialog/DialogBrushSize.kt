@@ -2,6 +2,8 @@ package org.dna.draw.dialog
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.widget.ImageButton
 import org.dna.draw.R
 
@@ -37,6 +39,12 @@ class DialogBrushSize(foContext: Context, fnListener: OnSelectBrushSizeListener)
     }
 
     fun showDialog(){
-        poDialog?.show()
+        val isShowing: Boolean = poDialog?.isShowing!!
+        if(!isShowing){
+            val loColor = ColorDrawable(Color.TRANSPARENT)
+            poDialog?.window?.setBackgroundDrawable(loColor)
+            poDialog?.show()
+            return
+        }
     }
 }

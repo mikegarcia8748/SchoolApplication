@@ -11,9 +11,8 @@ import androidx.core.view.get
 import org.dna.draw.dialog.DialogBrushSize
 import org.dna.draw.dialog.OnSelectBrushSizeListener
 import org.dna.utils.dialog.DialogMessage
-import org.dna.utils.dialog.OnDialogInterfaceClickListener
 
-class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener, OnDialogInterfaceClickListener {
+class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
 
     private var drawingView: DrawingView? = null
 
@@ -68,15 +67,18 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener, OnDialog
     }
 
     override fun onBackPressed() {
-        val loMessage: DialogMessage = DialogMessage(this, "Sample Title", "Sample message...")
-        loMessage.setPositiveButtonInterface("Okay", )
-    }
-
-    override fun onClickPositiveButton(dialog: Dialog): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun onClickNegativeButton(dialog: Dialog): Boolean {
-        TODO("Not yet implemented")
+        val loMessage = DialogMessage(this, "Sample Title", "Sample message...")
+        loMessage.setPositiveButtonInterface("Okay", object: DialogMessage.OnDialogInterfaceClickCallback {
+            override fun onClick(dialog: Dialog) {
+                dialog.dismiss()
+                finish()
+            }
+        })
+        loMessage.setNegativeButtonInterface("Cancel", object: DialogMessage.OnDialogInterfaceClickCallback {
+            override fun onClick(dialog: Dialog) {
+                dialog.dismiss()
+            }
+        })
+        loMessage.showDialog()
     }
 }
