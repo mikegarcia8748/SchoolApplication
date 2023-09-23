@@ -43,6 +43,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation(project(mapOf("path" to ":AppTheme")))
     implementation(project(mapOf("path" to ":Draw")))
+    implementation(project(mapOf("path" to ":Utils")))
 //    implementation(project(mapOf("path" to ":AccountManagement")))
     implementation(project(mapOf("path" to ":QuizzesMaster")))
 //    implementation(project(mapOf("path" to ":Authentication")))
