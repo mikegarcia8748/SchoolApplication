@@ -11,14 +11,12 @@ import org.dna.utils.R
 
 class DialogMessage (context: Context, title: String, message: String){
 
-    private val poContext = context
-
     private var btnPositive: MaterialButton? = null
     private var btnNegative: MaterialButton? = null
 
     private var poDialog: Dialog? = null
     init {
-        poDialog = Dialog(poContext)
+        poDialog = Dialog(context)
         poDialog?.setContentView(R.layout.dialog_message)
 
         val lblTitle = poDialog?.findViewById<MaterialTextView>(R.id.lblDialogTitle)
