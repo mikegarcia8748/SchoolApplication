@@ -120,6 +120,20 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageButton
+            android:id="@+id/btnUndoChanges"
+            style="@style/OutlinedButton.IconOnly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_undo_24" />
+
+        <ImageButton
+            android:id="@+id/btnRedoChanges"
+            style="@style/OutlinedButton.IconOnly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_redo_24" />
+
+        <ImageButton
             android:id="@+id/btnSelectBrushSize"
             style="@style/OutlinedButton.IconOnly"
             android:layout_width="wrap_content"

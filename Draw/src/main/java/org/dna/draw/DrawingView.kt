@@ -22,6 +22,7 @@ class DrawingView(mContext: Context, mAttr: AttributeSet): View(mContext, mAttr)
     private var poColor = Color.BLACK
     private var poCanvas: Canvas? = null
     private var poPaths = ArrayList<CustomPath>()
+    private var poUndoPaths = ArrayList<CustomPath>()
 
     init {
         setupDrawing()
@@ -35,6 +36,20 @@ class DrawingView(mContext: Context, mAttr: AttributeSet): View(mContext, mAttr)
         poPaint!!.strokeJoin = Paint.Join.ROUND
         poPaint!!.strokeCap = Paint.Cap.ROUND
         poCanvasPnt = Paint(Paint.DITHER_FLAG)
+    }
+
+    fun undoChanges(){
+        if(poPaths.size > 0){
+            poUndoPaths.add(poPaths.removeAt(poPaths.size - 1))
+            invalidate()
+        }
+    }
+
+    fun redoChanges(){
+        if(poUndoPaths.size > 0){
+            poPaths.add(poUndoPaths.removeAt(poUndoPaths.size - 1))
+            invalidate()
+        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

@@ -1,6 +1,7 @@
 package org.dna.schoolapplication
 
 import android.Manifest
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -12,7 +13,7 @@ import com.google.android.material.button.MaterialButton
 
 class ActivitySplashScreen : AppCompatActivity() {
 
-    /**
+
     private val poPermission: ActivityResultLauncher<Array<String>> =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
             permissions ->
@@ -33,12 +34,17 @@ class ActivitySplashScreen : AppCompatActivity() {
                             "Permission denied!",
                             Toast.LENGTH_SHORT
                         ).show()
+                    }else if(permission == Manifest.permission.READ_MEDIA_IMAGES){
+                        Toast.makeText(
+                            this,
+                            "Permission denied!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
         }
 
-     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
@@ -53,12 +59,18 @@ class ActivitySplashScreen : AppCompatActivity() {
     private fun requestStoragePermission(){
         if(ActivityCompat.shouldShowRequestPermissionRationale(
             this,
-            Manifest.permission.READ_EXTERNAL_STORAGE)){
+            Manifest.permission.READ_MEDIA_IMAGES)){
             showRationalDialog("School App", "School App needs to access your external storage.")
         } else {
-            poPermission.launch(arrayOf(
+            var lsPermissions = arrayOf<String>()
+
+            lsPermissions += if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Manifest.permission.READ_MEDIA_IMAGES
+            } else {
                 Manifest.permission.READ_EXTERNAL_STORAGE
-            ))
+            }
+
+            poPermission.launch(lsPermissions)
         }
     }
 
