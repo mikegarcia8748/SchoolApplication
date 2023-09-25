@@ -28,4 +28,8 @@ class DialogProgress(context: Context, message: String) {
             return
         }
     }
+
+    fun dismiss(){
+        poDialog?.dismiss()
+    }
 }

@@ -7,9 +7,9 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -17,16 +17,23 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.imageview.ShapeableImageView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 import org.dna.draw.dialog.DialogBrushSize
 import org.dna.draw.dialog.OnSelectBrushSizeListener
 import org.dna.utils.dialog.DialogMessage
+import org.dna.utils.dialog.DialogProgress
 
 class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
 
     private var drawingView: DrawingView? = null
     private var poImageBtnCurrentPaint : ImageButton? = null
     private var imgBackground: ShapeableImageView? = null
+
+    private var poLoadDialog: DialogProgress? = null
 
     private val poImagePermission: ActivityResultLauncher<Array<String>> =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
@@ -73,6 +80,7 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
         val btnSelectBackground: ImageButton = findViewById(R.id.btnSelectBackground)
         val btnUndoChanges: ImageButton = findViewById(R.id.btnUndoChanges)
         val btnRedoChanges: ImageButton = findViewById(R.id.btnRedoChanges)
+        val btnSaveCanvas: ImageButton = findViewById(R.id.btnSave)
 
         drawingView?.setBrushSize(10.toFloat())
 
@@ -98,6 +106,14 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
         btnRedoChanges.setOnClickListener {
             drawingView?.redoChanges()
         }
+
+        btnSaveCanvas.setOnClickListener {
+            poLoadDialog = DialogProgress(this@ActivityDrawing, "Executing coroutines...")
+            poLoadDialog?.showDialog()
+            lifecycleScope.launch{
+                execute("Coroutine executing....")
+            }
+        }
     }
 
     private fun showBrushSizeChooserDialog(){
@@ -108,7 +124,6 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
     override fun OnSelectBrushSize(nBrushSize: Float) {
         drawingView?.setBrushSize(nBrushSize)
     }
-
 
     fun paintClick(view: View){
         if(view !== poImageBtnCurrentPaint){
@@ -186,6 +201,23 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 ))
             }
+        }
+    }
+
+    private suspend fun execute(result: String){
+        withContext(Dispatchers.IO){
+            for(i in 1..10){
+                Log.d("Coroutine", "")
+                Thread.sleep(1000)
+            }
+        }
+        runOnUiThread {
+            poLoadDialog?.dismiss()
+            Toast.makeText(
+                this@ActivityDrawing,
+                result,
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }
