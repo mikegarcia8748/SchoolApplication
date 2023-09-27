@@ -43,26 +43,32 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
 
     private var poLoadDialog: DialogProgress? = null
 
-    private val poImagePermission: ActivityResultLauncher<Array<String>> =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
-            permissions ->
-            permissions.entries.forEach{
-                val lsPermission = it.key
-                val isGranted = it.value
-
-                if(!isGranted){
-                    Toast.makeText(
-                        this@ActivityDrawing,
-                        "Permission denied!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    return@forEach
-                }
-
-                val loIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                poGallery.launch(loIntent)
+    private val poWriteStorage: ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()){
+            if(!it){
+                Toast.makeText(
+                    this@ActivityDrawing,
+                    "Permission denied!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@registerForActivityResult
             }
+
+            saveCanvasImage()
+        }
+
+    private val poReadImage: ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()){
+            if(!it){
+                Toast.makeText(
+                    this@ActivityDrawing,
+                    "Permission denied!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@registerForActivityResult
+            }
+
+            openGallery()
         }
 
     private val poGallery: ActivityResultLauncher<Intent> =
@@ -116,18 +122,12 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
         }
 
         btnSaveCanvas.setOnClickListener {
-            if(!isReadStorageAllowed()){
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                saveCanvasImage()
                 return@setOnClickListener
             }
 
-            poLoadDialog = DialogProgress(this@ActivityDrawing, "Executing coroutines...")
-            poLoadDialog?.showDialog()
-            lifecycleScope.launch{
-                val frameLayout: FrameLayout = findViewById(R.id.frame_container)
-
-                saveCanvasBitmap(getBitmapFromView(frameLayout))
-            }
+            poWriteStorage.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
     }
 
@@ -177,6 +177,12 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
         loMessage.showDialog()
     }
 
+    private fun openGallery(){
+        val loIntent =
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        poGallery.launch(loIntent)
+    }
+
     private fun requestMediaImagePermission(){
         if(ActivityCompat.shouldShowRequestPermissionRationale(
                 this@ActivityDrawing,
@@ -190,13 +196,9 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
                 override fun onClick(dialog: Dialog) {
                     dialog.dismiss()
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        poImagePermission.launch(arrayOf(
-                            Manifest.permission.READ_MEDIA_IMAGES
-                        ))
+                        poReadImage.launch(Manifest.permission.READ_MEDIA_IMAGES)
                     } else {
-                        poImagePermission.launch(arrayOf(
-                            Manifest.permission.READ_EXTERNAL_STORAGE
-                        ))
+                        poReadImage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                     }
                 }
             })
@@ -208,23 +210,21 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
             loMessage.showDialog()
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                poImagePermission.launch(arrayOf(
-                    Manifest.permission.READ_MEDIA_IMAGES
-                ))
+                poReadImage.launch(Manifest.permission.READ_MEDIA_IMAGES)
             } else {
-                poImagePermission.launch(arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ))
+                poReadImage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
         }
     }
 
-    private fun isReadStorageAllowed(): Boolean {
-        val lnResult = ContextCompat.checkSelfPermission(
-            this@ActivityDrawing,
-            Manifest.permission.READ_EXTERNAL_STORAGE)
+    private fun saveCanvasImage(){
+//        poLoadDialog = DialogProgress(this@ActivityDrawing, "Executing coroutines...")
+//        poLoadDialog?.showDialog()
+        lifecycleScope.launch{
+            val frameLayout: FrameLayout = findViewById(R.id.frame_container)
 
-        return lnResult == PackageManager.PERMISSION_GRANTED
+            saveCanvasBitmap(getBitmapFromView(frameLayout))
+        }
     }
 
     private fun getBitmapFromView(view: View) : Bitmap {
@@ -251,42 +251,40 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
     private suspend fun saveCanvasBitmap(bitmap: Bitmap): String{
         var lsResult = ""
         withContext(Dispatchers.IO){
-            if(bitmap != null){
-                try{
-                    val loBytes = ByteArrayOutputStream()
-                    bitmap.compress(
-                        Bitmap.CompressFormat.PNG,
-                        90,
-                        loBytes)
+            try{
+                val loBytes = ByteArrayOutputStream()
+                bitmap.compress(
+                    Bitmap.CompressFormat.PNG,
+                    90,
+                    loBytes)
 
-                    val loFile = File(externalCacheDir?.absoluteFile.toString()
-                            + File.separator + "Canvas_" + System.currentTimeMillis() / 1000 + ".png")
+                val loFile = File(externalCacheDir?.absoluteFile.toString()
+                        + File.separator + "Canvas_" + System.currentTimeMillis() / 1000 + ".png")
 
-                    val loOutput = FileOutputStream(loFile)
-                    loOutput.write(loBytes.toByteArray())
-                    loOutput.close()
+                val loOutput = FileOutputStream(loFile)
+                loOutput.write(loBytes.toByteArray())
+                loOutput.close()
 
-                    lsResult = loFile.absolutePath
+                lsResult = loFile.absolutePath
 
-                    runOnUiThread{
-                        if(lsResult.isNotEmpty()){
-                            Toast.makeText(
-                                this@ActivityDrawing,
-                                "File saved successfully :$lsResult",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            Toast.makeText(
-                                this@ActivityDrawing,
-                                "Something went wrong while saving the file.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                runOnUiThread{
+                    if(lsResult.isNotEmpty()){
+                        Toast.makeText(
+                            this@ActivityDrawing,
+                            "File saved successfully :$lsResult",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            this@ActivityDrawing,
+                            "Something went wrong while saving the file.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                } catch (e: Exception){
-                    lsResult = ""
-                    e.printStackTrace()
                 }
+            } catch (e: Exception){
+                lsResult = ""
+                e.printStackTrace()
             }
         }
 
