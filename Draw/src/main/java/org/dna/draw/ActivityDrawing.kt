@@ -221,8 +221,12 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
 //        poLoadDialog = DialogProgress(this@ActivityDrawing, "Executing coroutines...")
 //        poLoadDialog?.showDialog()
         lifecycleScope.launch{
+            poLoadDialog = DialogProgress(
+                this@ActivityDrawing,
+                "Saving canvas image. Please wait...",
+            )
+            poLoadDialog?.showDialog()
             val frameLayout: FrameLayout = findViewById(R.id.frame_container)
-
             saveCanvasBitmap(getBitmapFromView(frameLayout))
         }
     }
@@ -249,7 +253,7 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
     }
 
     private suspend fun saveCanvasBitmap(bitmap: Bitmap): String{
-        var lsResult = ""
+        var lsResult: String
         withContext(Dispatchers.IO){
             try{
                 val loBytes = ByteArrayOutputStream()
@@ -268,6 +272,7 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
                 lsResult = loFile.absolutePath
 
                 runOnUiThread{
+                    poLoadDialog?.dismiss()
                     if(lsResult.isNotEmpty()){
                         Toast.makeText(
                             this@ActivityDrawing,
