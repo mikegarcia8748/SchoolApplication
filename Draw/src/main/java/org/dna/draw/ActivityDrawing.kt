@@ -3,12 +3,16 @@ package org.dna.draw
 import android.Manifest
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -26,6 +30,10 @@ import org.dna.draw.dialog.DialogBrushSize
 import org.dna.draw.dialog.OnSelectBrushSizeListener
 import org.dna.utils.dialog.DialogMessage
 import org.dna.utils.dialog.DialogProgress
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.Exception
 
 class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
 
@@ -108,10 +116,17 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
         }
 
         btnSaveCanvas.setOnClickListener {
+            if(!isReadStorageAllowed()){
+
+                return@setOnClickListener
+            }
+
             poLoadDialog = DialogProgress(this@ActivityDrawing, "Executing coroutines...")
             poLoadDialog?.showDialog()
             lifecycleScope.launch{
-                execute("Coroutine executing....")
+                val frameLayout: FrameLayout = findViewById(R.id.frame_container)
+
+                saveCanvasBitmap(getBitmapFromView(frameLayout))
             }
         }
     }
@@ -204,20 +219,77 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
         }
     }
 
-    private suspend fun execute(result: String){
+    private fun isReadStorageAllowed(): Boolean {
+        val lnResult = ContextCompat.checkSelfPermission(
+            this@ActivityDrawing,
+            Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        return lnResult == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun getBitmapFromView(view: View) : Bitmap {
+        val loBitmap = Bitmap.createBitmap(
+            view.width,
+            view.height,
+            Bitmap.Config.ARGB_8888
+        )
+
+        val loCanvas = Canvas(loBitmap)
+        val loBackground = view.background
+
+        if(loBackground != null){
+            loBackground.draw(loCanvas)
+        } else {
+            loCanvas.drawColor(Color.WHITE)
+        }
+
+        view.draw(loCanvas)
+
+        return loBitmap
+    }
+
+    private suspend fun saveCanvasBitmap(bitmap: Bitmap): String{
+        var lsResult = ""
         withContext(Dispatchers.IO){
-            for(i in 1..10){
-                Log.d("Coroutine", "")
-                Thread.sleep(1000)
+            if(bitmap != null){
+                try{
+                    val loBytes = ByteArrayOutputStream()
+                    bitmap.compress(
+                        Bitmap.CompressFormat.PNG,
+                        90,
+                        loBytes)
+
+                    val loFile = File(externalCacheDir?.absoluteFile.toString()
+                            + File.separator + "Canvas_" + System.currentTimeMillis() / 1000 + ".png")
+
+                    val loOutput = FileOutputStream(loFile)
+                    loOutput.write(loBytes.toByteArray())
+                    loOutput.close()
+
+                    lsResult = loFile.absolutePath
+
+                    runOnUiThread{
+                        if(lsResult.isNotEmpty()){
+                            Toast.makeText(
+                                this@ActivityDrawing,
+                                "File saved successfully :$lsResult",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this@ActivityDrawing,
+                                "Something went wrong while saving the file.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                } catch (e: Exception){
+                    lsResult = ""
+                    e.printStackTrace()
+                }
             }
         }
-        runOnUiThread {
-            poLoadDialog?.dismiss()
-            Toast.makeText(
-                this@ActivityDrawing,
-                result,
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+
+        return lsResult
     }
 }
