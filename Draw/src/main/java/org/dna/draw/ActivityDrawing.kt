@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.media.MediaScannerConnection
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -279,6 +280,7 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
                             "File saved successfully :$lsResult",
                             Toast.LENGTH_SHORT
                         ).show()
+                        shareImage(lsResult)
                     } else {
                         Toast.makeText(
                             this@ActivityDrawing,
@@ -294,5 +296,20 @@ class ActivityDrawing : AppCompatActivity(), OnSelectBrushSizeListener {
         }
 
         return lsResult
+    }
+
+    private fun shareImage(result: String){
+        MediaScannerConnection.scanFile(
+            this@ActivityDrawing,
+            arrayOf(result),
+            null){
+            path, uri ->
+
+            val loIntent = Intent()
+            loIntent.action = Intent.ACTION_SEND
+            loIntent.putExtra(Intent.EXTRA_STREAM, uri)
+            loIntent.type = "image/png"
+            startActivity(Intent.createChooser(loIntent, "Share"))
+        }
     }
 }
